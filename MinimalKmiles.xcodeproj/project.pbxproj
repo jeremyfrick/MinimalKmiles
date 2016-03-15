@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9666E69F1C94C7F100153768 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9666E69D1C94C7F100153768 /* Interface.storyboard */; };
+		9666E6A11C94C7F100153768 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9666E6A01C94C7F100153768 /* Assets.xcassets */; };
+		9666E6A81C94C7F100153768 /* kmiles Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9666E6A71C94C7F100153768 /* kmiles Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9666E6AD1C94C7F100153768 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9666E6AC1C94C7F100153768 /* InterfaceController.swift */; };
+		9666E6AF1C94C7F100153768 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9666E6AE1C94C7F100153768 /* ExtensionDelegate.swift */; };
+		9666E6B11C94C7F100153768 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9666E6B01C94C7F100153768 /* ComplicationController.swift */; };
+		9666E6B31C94C7F100153768 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9666E6B21C94C7F100153768 /* Assets.xcassets */; };
+		9666E6B71C94C7F100153768 /* kmiles.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9666E69B1C94C7F100153768 /* kmiles.app */; };
+		9666E6C01C94CACD00153768 /* enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FB93421C90EDED00D75AAE /* enums.swift */; };
+		9666E6C11C94CFDE00153768 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96F3951B1C8FA71E00D5C52E /* Images.xcassets */; };
 		96F394B81C8FA48F00D5C52E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F394B71C8FA48F00D5C52E /* AppDelegate.swift */; };
 		96F394CA1C8FA51600D5C52E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F394C91C8FA51600D5C52E /* CoreLocation.framework */; };
 		96F395061C8FA61900D5C52E /* editPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F394FF1C8FA61900D5C52E /* editPopOverViewController.swift */; };
@@ -46,7 +56,61 @@
 		96FB93701C90F01800D75AAE /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 96FB93601C90F01800D75AAE /* IQKeyboardManager.bundle */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9666E6A91C94C7F100153768 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96F394AC1C8FA48F00D5C52E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9666E6A61C94C7F100153768;
+			remoteInfo = "kmiles Extension";
+		};
+		9666E6B51C94C7F100153768 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96F394AC1C8FA48F00D5C52E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9666E69A1C94C7F100153768;
+			remoteInfo = kmiles;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9666E6BD1C94C7F100153768 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9666E6A81C94C7F100153768 /* kmiles Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9666E6BF1C94C7F100153768 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				9666E6B71C94C7F100153768 /* kmiles.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		9624933F1C94F283008C4EEA /* kmiles.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = kmiles.entitlements; sourceTree = "<group>"; };
+		962493401C94F2A0008C4EEA /* kmiles Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "kmiles Extension.entitlements"; sourceTree = "<group>"; };
+		9666E69B1C94C7F100153768 /* kmiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kmiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9666E69E1C94C7F100153768 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		9666E6A01C94C7F100153768 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9666E6A21C94C7F100153768 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9666E6A71C94C7F100153768 /* kmiles Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "kmiles Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9666E6AC1C94C7F100153768 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		9666E6AE1C94C7F100153768 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		9666E6B01C94C7F100153768 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		9666E6B21C94C7F100153768 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9666E6B41C94C7F100153768 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96F394B41C8FA48F00D5C52E /* MinimalKmiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinimalKmiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96F394B71C8FA48F00D5C52E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96F394C31C8FA48F00D5C52E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -92,6 +156,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9666E6A41C94C7F100153768 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		96F394B11C8FA48F00D5C52E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -103,6 +174,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9666E69C1C94C7F100153768 /* kmiles */ = {
+			isa = PBXGroup;
+			children = (
+				9624933F1C94F283008C4EEA /* kmiles.entitlements */,
+				9666E69D1C94C7F100153768 /* Interface.storyboard */,
+				9666E6A01C94C7F100153768 /* Assets.xcassets */,
+				9666E6A21C94C7F100153768 /* Info.plist */,
+			);
+			path = kmiles;
+			sourceTree = "<group>";
+		};
+		9666E6AB1C94C7F100153768 /* kmiles Extension */ = {
+			isa = PBXGroup;
+			children = (
+				962493401C94F2A0008C4EEA /* kmiles Extension.entitlements */,
+				9666E6AC1C94C7F100153768 /* InterfaceController.swift */,
+				9666E6AE1C94C7F100153768 /* ExtensionDelegate.swift */,
+				9666E6B01C94C7F100153768 /* ComplicationController.swift */,
+				9666E6B21C94C7F100153768 /* Assets.xcassets */,
+				9666E6B41C94C7F100153768 /* Info.plist */,
+			);
+			path = "kmiles Extension";
+			sourceTree = "<group>";
+		};
 		96BDE8141C90976E00DAA086 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +214,8 @@
 			children = (
 				96F394C91C8FA51600D5C52E /* CoreLocation.framework */,
 				96F394B61C8FA48F00D5C52E /* MinimalKmiles */,
+				9666E69C1C94C7F100153768 /* kmiles */,
+				9666E6AB1C94C7F100153768 /* kmiles Extension */,
 				96F394B51C8FA48F00D5C52E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -127,6 +224,8 @@
 			isa = PBXGroup;
 			children = (
 				96F394B41C8FA48F00D5C52E /* MinimalKmiles.app */,
+				9666E69B1C94C7F100153768 /* kmiles.app */,
+				9666E6A71C94C7F100153768 /* kmiles Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -251,6 +350,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9666E69A1C94C7F100153768 /* kmiles */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9666E6BE1C94C7F100153768 /* Build configuration list for PBXNativeTarget "kmiles" */;
+			buildPhases = (
+				9666E6991C94C7F100153768 /* Resources */,
+				9666E6BD1C94C7F100153768 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9666E6AA1C94C7F100153768 /* PBXTargetDependency */,
+			);
+			name = kmiles;
+			productName = kmiles;
+			productReference = 9666E69B1C94C7F100153768 /* kmiles.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		9666E6A61C94C7F100153768 /* kmiles Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9666E6BC1C94C7F100153768 /* Build configuration list for PBXNativeTarget "kmiles Extension" */;
+			buildPhases = (
+				9666E6A31C94C7F100153768 /* Sources */,
+				9666E6A41C94C7F100153768 /* Frameworks */,
+				9666E6A51C94C7F100153768 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "kmiles Extension";
+			productName = "kmiles Extension";
+			productReference = 9666E6A71C94C7F100153768 /* kmiles Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		96F394B31C8FA48F00D5C52E /* MinimalKmiles */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 96F394C61C8FA48F00D5C52E /* Build configuration list for PBXNativeTarget "MinimalKmiles" */;
@@ -258,10 +391,12 @@
 				96F394B01C8FA48F00D5C52E /* Sources */,
 				96F394B11C8FA48F00D5C52E /* Frameworks */,
 				96F394B21C8FA48F00D5C52E /* Resources */,
+				9666E6BF1C94C7F100153768 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9666E6B61C94C7F100153768 /* PBXTargetDependency */,
 			);
 			name = MinimalKmiles;
 			productName = MinimalKmiles;
@@ -278,6 +413,24 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Red Anchor Software";
 				TargetAttributes = {
+					9666E69A1C94C7F100153768 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 4TU6VT9LV5;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+					9666E6A61C94C7F100153768 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 4TU6VT9LV5;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					96F394B31C8FA48F00D5C52E = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 4TU6VT9LV5;
@@ -306,11 +459,31 @@
 			projectRoot = "";
 			targets = (
 				96F394B31C8FA48F00D5C52E /* MinimalKmiles */,
+				9666E69A1C94C7F100153768 /* kmiles */,
+				9666E6A61C94C7F100153768 /* kmiles Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9666E6991C94C7F100153768 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9666E6A11C94C7F100153768 /* Assets.xcassets in Resources */,
+				9666E69F1C94C7F100153768 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9666E6A51C94C7F100153768 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9666E6B31C94C7F100153768 /* Assets.xcassets in Resources */,
+				9666E6C11C94CFDE00153768 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		96F394B21C8FA48F00D5C52E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -325,6 +498,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9666E6A31C94C7F100153768 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9666E6AF1C94C7F100153768 /* ExtensionDelegate.swift in Sources */,
+				9666E6AD1C94C7F100153768 /* InterfaceController.swift in Sources */,
+				9666E6C01C94CACD00153768 /* enums.swift in Sources */,
+				9666E6B11C94C7F100153768 /* ComplicationController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		96F394B01C8FA48F00D5C52E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -366,7 +550,99 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9666E6AA1C94C7F100153768 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9666E6A61C94C7F100153768 /* kmiles Extension */;
+			targetProxy = 9666E6A91C94C7F100153768 /* PBXContainerItemProxy */;
+		};
+		9666E6B61C94C7F100153768 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9666E69A1C94C7F100153768 /* kmiles */;
+			targetProxy = 9666E6B51C94C7F100153768 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9666E69D1C94C7F100153768 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9666E69E1C94C7F100153768 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		9666E6B81C94C7F100153768 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = kmiles/kmiles.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = kmiles_Extension;
+				INFOPLIST_FILE = kmiles/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.RedAnchorSoftware.MinimalKmiles.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		9666E6B91C94C7F100153768 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = kmiles/kmiles.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = kmiles_Extension;
+				INFOPLIST_FILE = kmiles/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.RedAnchorSoftware.MinimalKmiles.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		9666E6BA1C94C7F100153768 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "kmiles Extension/kmiles Extension.entitlements";
+				INFOPLIST_FILE = "kmiles Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.RedAnchorSoftware.MinimalKmiles.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		9666E6BB1C94C7F100153768 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "kmiles Extension/kmiles Extension.entitlements";
+				INFOPLIST_FILE = "kmiles Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.RedAnchorSoftware.MinimalKmiles.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
 		96F394C41C8FA48F00D5C52E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -479,6 +755,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9666E6BC1C94C7F100153768 /* Build configuration list for PBXNativeTarget "kmiles Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9666E6BA1C94C7F100153768 /* Debug */,
+				9666E6BB1C94C7F100153768 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9666E6BE1C94C7F100153768 /* Build configuration list for PBXNativeTarget "kmiles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9666E6B81C94C7F100153768 /* Debug */,
+				9666E6B91C94C7F100153768 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		96F394AF1C8FA48F00D5C52E /* Build configuration list for PBXProject "MinimalKmiles" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

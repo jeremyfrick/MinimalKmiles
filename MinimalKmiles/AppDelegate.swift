@@ -8,12 +8,14 @@
 
 import UIKit
 import CoreData
+import WatchConnectivity
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
     lazy var coreLocationController = CoreLocationController()
     var tableSetupQueue: NSOperationQueue?
     lazy var coreDataStack = CoreDataStack()
+    let prefs = NSUserDefaults(suiteName:"group.RedAnchorSoftware.MinimalKmiles")!
     var window: UIWindow?
 
 
@@ -28,9 +30,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         viewController.managedContext = coreDataStack.context
         viewController.locationManager = coreLocationController
         IQKeyboardManager.sharedManager().enable = true
+        //WatchSessionManager.sharedManager.startSession()
+        if WCSession.isSupported() {
+            let session = WCSession.defaultSession()
+            session.delegate = self
+            session.activateSession()
+            
+            if session.paired != true {
+                print ("Apple Watch not paired")
+            }
+            if session.watchAppInstalled != true {
+                print("Watch App not installed")
+            }
+        }else {
+            print("WatchConnectivity is not supported on this device")
+        }
         
         return true
     }
+    
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+        var replyValues = Dictionary<String, AnyObject>()
+        
+        // Reply handler, received message
+        let value = message["Message"] as? Int
+        let vc = NewTripViewController() 
+        if value == 1{
+            vc.remoteSave()
+        }
+        print(value)
+        
+        // Send a reply
+        replyValues = ["Message" : prefs.integerForKey("TripInProgress")]
+        replyHandler(replyValues)
+    }
+
+    
+    
     func setupAppearance() {
         
         let navigationBarAppearance = UINavigationBar.appearance()

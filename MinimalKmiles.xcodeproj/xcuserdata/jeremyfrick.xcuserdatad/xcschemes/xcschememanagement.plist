@@ -9,9 +9,24 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>kmiles (Complication).xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>kmiles.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>9666E69A1C94C7F100153768</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>96F394B31C8FA48F00D5C52E</key>
 		<dict>
 			<key>primary</key>

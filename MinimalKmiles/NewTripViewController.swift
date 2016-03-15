@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import CoreData
 import MessageUI
+import WatchConnectivity
+
 
 class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailComposeViewControllerDelegate {
     
@@ -42,7 +44,6 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         purposeTextBox.delegate = self
         shareCurrentTripButton.enabled = false
         navigationItem.rightBarButtonItem?.enabled = false
@@ -66,7 +67,7 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
             measurement = unitOfMeasurement.Miles
             
         }
-    }
+        }
     
     func distanceUpdated(notification:NSNotification) {
         let userInfo = notification.userInfo as! Dictionary<String,Double>
@@ -75,6 +76,36 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
             distanceLabel.text = converter.convert(measurement.rawValue , distance: newDistance)
         }
     }
+    func sendUpdatedStatus(status: Int){
+        
+        if WCSession.defaultSession().reachable == true{
+            let messageData = ["Message":status]
+            let session = WCSession.defaultSession()
+            session.sendMessage(messageData, replyHandler: {reply in
+                }, errorHandler: { error in
+                    print("Error: \(error)")
+            })
+        }
+    }
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
+        print(message["Message"])
+        let status = message["Message"] as! Int
+        print("Status: \(status)")
+        if let tripInProgressStatus = currentlyTracking(rawValue:status) {
+            if tripInProgressStatus == currentlyTracking.Yes {
+                dispatch_async(dispatch_get_main_queue()) {
+                }
+                print("STOP")
+            }else {
+                print("Go")
+                dispatch_async(dispatch_get_main_queue()) {
+                }
+                
+            }
+            
+        }
+    }
+
     
     // MARK: - UI Controls
     
@@ -84,6 +115,7 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
             case .No:
                 let updatedTripInProgressStatus = currentlyTracking.Yes
                 prefs.setInteger(updatedTripInProgressStatus.rawValue, forKey: "TripInProgress")
+                sendUpdatedStatus(updatedTripInProgressStatus.rawValue)
                 shareCurrentTripButton.enabled = false
                 stopStartButton.setImage(UIImage(named: "stopButton"), forState: .Normal)
                 let tripEnitity = NSEntityDescription.entityForName("Trip", inManagedObjectContext: managedObjectContext)
@@ -92,8 +124,10 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
                 locationManager.beginTrip()
                 
             case .Yes:
-                let updatedTripInProgressStatus = currentlyTracking.No
-                prefs.setInteger(updatedTripInProgressStatus.rawValue, forKey: "TripInProgress")
+                let updatedTripInProgressStatus = 1 //currentlyTracking.No
+                prefs.setInteger(updatedTripInProgressStatus, forKey: "TripInProgress")
+                sendUpdatedStatus(updatedTripInProgressStatus)
+
                 locationManager.StopTrip()
                 trip!.miles = Int16(measurement.rawValue)
                 trip!.purpose = purposeTextBox.text!
@@ -109,6 +143,23 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
                     },
                                            completion: nil)
             }
+        }
+
+    }
+    func remoteSave(){
+        let updatedTripInProgressStatus = 1 //currentlyTracking.No
+        prefs.setInteger(updatedTripInProgressStatus, forKey: "TripInProgress")
+        //sendUpdatedStatus(updatedTripInProgressStatus)
+        let tripPurpose = prefs.stringForKey("purpose")
+        
+        locationManager.StopTrip()
+        trip!.miles = Int16(measurement.rawValue)
+        trip!.distance = 0
+        trip!.purpose = tripPurpose!
+        do {
+            try managedObjectContext.save()
+        } catch let error as NSError {
+            print("error: \(error.localizedDescription)")
         }
 
     }
