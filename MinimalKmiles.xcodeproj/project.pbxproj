@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		962AFC8A1C99C248008BA19D /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962AFC891C99C248008BA19D /* LogInViewController.swift */; };
 		96F394B81C8FA48F00D5C52E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F394B71C8FA48F00D5C52E /* AppDelegate.swift */; };
 		96F394CA1C8FA51600D5C52E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F394C91C8FA51600D5C52E /* CoreLocation.framework */; };
 		96F395061C8FA61900D5C52E /* editPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F394FF1C8FA61900D5C52E /* editPopOverViewController.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		962AFC891C99C248008BA19D /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		96F394B41C8FA48F00D5C52E /* MinimalKmiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinimalKmiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96F394B71C8FA48F00D5C52E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96F394C31C8FA48F00D5C52E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				96F395031C8FA61900D5C52E /* TripViewEditViewController.swift */,
 				96F395041C8FA61900D5C52E /* ViewNotesController.swift */,
 				96F395051C8FA61900D5C52E /* ViewTripsControllerTableViewController.swift */,
+				962AFC891C99C248008BA19D /* LogInViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 			files = (
 				96FB93441C90EDED00D75AAE /* enums.swift in Sources */,
 				96F395141C8FA6A500D5C52E /* Trip.swift in Sources */,
+				962AFC8A1C99C248008BA19D /* LogInViewController.swift in Sources */,
 				96F3950C1C8FA61900D5C52E /* ViewTripsControllerTableViewController.swift in Sources */,
 				96F3950B1C8FA61900D5C52E /* ViewNotesController.swift in Sources */,
 				96FB93691C90F01800D75AAE /* IQKeyboardManager.swift in Sources */,

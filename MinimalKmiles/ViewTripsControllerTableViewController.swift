@@ -26,6 +26,8 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     let userDefaults: NSUserDefaults = NSUserDefaults(suiteName: "group.RedAnchorSoftware.MinimalKmiles")!
     let printer = ReportPrinter()
     let quires = TripQueries()
+    var isAuthenticated = false
+    var didReturnFromBackground = false
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -36,15 +38,6 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         fetch(FetchResultsCon)
         tableView.reloadData()
         fetchAndReload()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        FetchResultsCon = getFetchResultsCon()
-        fetch(FetchResultsCon)
-        
-        self.refreshControl?.addTarget(self, action: #selector(ViewTripsControllerTableViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        
         self.resultSearchController.searchResultsUpdater = self
         self.resultSearchController.dimsBackgroundDuringPresentation = false
         self.resultSearchController.searchBar.sizeToFit()
@@ -57,9 +50,52 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         self.tableView.tableHeaderView = self.resultSearchController.searchBar
         
         definesPresentationContext = true
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(false)
+        self.showLoginView()
+    }
+    
+    override func viewDidLoad() {
+        view.alpha = 0
+        super.viewDidLoad()
+        FetchResultsCon = getFetchResultsCon()
+        fetch(FetchResultsCon)
+        
+        self.refreshControl?.addTarget(self, action: #selector(ViewTripsControllerTableViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appWillResignActive:", name: UIApplicationWillResignActiveNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+        
         
         tableView.estimatedRowHeight = 46.0
     }
+    
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
+        isAuthenticated = true
+        view.alpha = 1.0
+    }
+    
+    func appWillResignActive(notification : NSNotification) {
+        view.alpha = 0
+        isAuthenticated = false
+        didReturnFromBackground = true
+    }
+    
+    func appDidBecomeActive(notification : NSNotification) {
+        if didReturnFromBackground {
+            self.showLoginView()
+        }
+    }
+    func showLoginView() {
+        
+        if !isAuthenticated {
+            
+            self.performSegueWithIdentifier("loginView", sender: self)
+        }
+    }
+
     
     // MARK: - TableView
     
@@ -113,14 +149,15 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     
     func fetchAndReload() {
         let tripsFetch = NSFetchRequest(entityName: "Trip")
-        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: true)
         tripsFetch.sortDescriptors = [sortDescriptor]
         do {
             let result = try managedContext.executeFetchRequest(tripsFetch)
             self.trips = result as! [Trip]
             if trips.count == 0 {
-                
+                navigationItem.rightBarButtonItems![1].enabled = false
             } else {
+                navigationItem.rightBarButtonItems![1].enabled = true
                 currentTrip = trips[0]
             }
         } catch let error as NSError {
@@ -138,7 +175,7 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     
     func fetchRequest() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: "Trip")
-        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         return fetchRequest
         
