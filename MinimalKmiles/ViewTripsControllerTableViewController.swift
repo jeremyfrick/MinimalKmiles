@@ -28,7 +28,9 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     let quires = TripQueries()
     var isAuthenticated = false
     var didReturnFromBackground = false
-
+    @IBOutlet weak var LogoutButton: UIBarButtonItem!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -64,9 +66,9 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         fetch(FetchResultsCon)
         
         self.refreshControl?.addTarget(self, action: #selector(ViewTripsControllerTableViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appWillResignActive:", name: UIApplicationWillResignActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewTripsControllerTableViewController.appWillResignActive(_:)), name: UIApplicationWillResignActiveNotification, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewTripsControllerTableViewController.appDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
         
         
         tableView.estimatedRowHeight = 46.0
@@ -95,6 +97,13 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
             self.performSegueWithIdentifier("loginView", sender: self)
         }
     }
+    
+    @IBAction func logoutAction(sender: AnyObject) {
+        
+        isAuthenticated = false
+        self.performSegueWithIdentifier("loginView", sender: self)
+    }
+
 
     
     // MARK: - TableView

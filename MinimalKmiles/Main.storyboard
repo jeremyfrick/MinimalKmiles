@@ -903,6 +903,11 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Trips" id="AVD-Nn-Dae">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="qf2-JM-taz">
+                            <connections>
+                                <action selector="logoutAction:" destination="cyD-x6-Czv" id="eNS-E1-hk7"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="Re4-Zs-dRr">
                                 <connections>
@@ -921,6 +926,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                     <connections>
+                        <outlet property="LogoutButton" destination="qf2-JM-taz" id="itw-OP-A1g"/>
                         <segue destination="2up-Ju-ZPs" kind="presentation" identifier="loginView" id="LZH-nQ-6e4"/>
                     </connections>
                 </tableViewController>
@@ -986,6 +992,30 @@
                                 <color key="textColor" red="0.76470588240000004" green="0.3921568627" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6mB-Nu-L8x">
+                                <rect key="frame" x="267" y="381" width="67" height="66"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="67" id="SCd-gk-Dys"/>
+                                    <constraint firstAttribute="height" constant="66" id="Sj6-wG-X0Z"/>
+                                </constraints>
+                                <state key="normal" image="TouchID">
+                                    <color key="titleShadowColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="touchIDLoginAction:" destination="2up-Ju-ZPs" eventType="touchUpInside" id="bTm-22-MeE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ct8-R6-QAc">
+                                <rect key="frame" x="287" y="455" width="27" height="33"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="0q5-29-X5e"/>
+                                    <constraint firstAttribute="width" constant="27" id="g22-Dk-lnA"/>
+                                </constraints>
+                                <state key="normal" image="onepassword-button"/>
+                                <connections>
+                                    <action selector="canUse1Password:" destination="2up-Ju-ZPs" eventType="touchUpInside" id="Ye8-oq-97O"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.35686274509999999" green="0.2901960784" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -993,6 +1023,8 @@
                             <constraint firstItem="arg-Cj-0Sj" firstAttribute="top" secondItem="jX8-nw-xLc" secondAttribute="bottom" constant="29" id="4Ji-Pd-Cln"/>
                             <constraint firstItem="dDh-pc-gu4" firstAttribute="top" secondItem="kda-GB-KJd" secondAttribute="bottom" constant="236" id="5b9-jR-zDi"/>
                             <constraint firstItem="arg-Cj-0Sj" firstAttribute="trailing" secondItem="F2Z-Ze-Ro4" secondAttribute="trailing" id="6ng-Om-B6k"/>
+                            <constraint firstItem="dDh-pc-gu4" firstAttribute="top" secondItem="Ct8-R6-QAc" secondAttribute="bottom" constant="112" id="Ao8-D8-LmE"/>
+                            <constraint firstItem="Ct8-R6-QAc" firstAttribute="centerX" secondItem="gVB-W0-TYC" secondAttribute="centerX" id="BaS-5V-OCT"/>
                             <constraint firstItem="jX8-nw-xLc" firstAttribute="centerX" secondItem="arg-Cj-0Sj" secondAttribute="centerX" id="EwQ-Dn-jo7"/>
                             <constraint firstItem="F2Z-Ze-Ro4" firstAttribute="leading" secondItem="kda-GB-KJd" secondAttribute="leading" id="INn-op-i34"/>
                             <constraint firstItem="F2Z-Ze-Ro4" firstAttribute="top" secondItem="arg-Cj-0Sj" secondAttribute="bottom" constant="22" id="JL1-Zn-9lt"/>
@@ -1000,15 +1032,20 @@
                             <constraint firstItem="F2Z-Ze-Ro4" firstAttribute="trailing" secondItem="kda-GB-KJd" secondAttribute="trailing" id="NLS-LD-Qvk"/>
                             <constraint firstItem="5C6-6N-69F" firstAttribute="centerX" secondItem="kda-GB-KJd" secondAttribute="centerX" id="a9L-bN-ABY"/>
                             <constraint firstItem="kda-GB-KJd" firstAttribute="top" secondItem="5C6-6N-69F" secondAttribute="bottom" constant="16" id="bT4-3B-4KW"/>
+                            <constraint firstItem="6mB-Nu-L8x" firstAttribute="top" secondItem="kda-GB-KJd" secondAttribute="bottom" constant="17" id="bri-SW-KQj"/>
                             <constraint firstItem="arg-Cj-0Sj" firstAttribute="leading" secondItem="gVB-W0-TYC" secondAttribute="leadingMargin" id="csS-Xm-40Z"/>
                             <constraint firstItem="5C6-6N-69F" firstAttribute="top" secondItem="F2Z-Ze-Ro4" secondAttribute="bottom" constant="27" id="kH3-cZ-Jll"/>
+                            <constraint firstItem="6mB-Nu-L8x" firstAttribute="centerX" secondItem="gVB-W0-TYC" secondAttribute="centerX" id="pNX-wb-vn5"/>
                             <constraint firstItem="arg-Cj-0Sj" firstAttribute="leading" secondItem="F2Z-Ze-Ro4" secondAttribute="leading" id="ri8-Vg-AaT"/>
                             <constraint firstItem="arg-Cj-0Sj" firstAttribute="trailing" secondItem="gVB-W0-TYC" secondAttribute="trailingMargin" id="vsj-ZL-clo"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="createInfoLabel" destination="kda-GB-KJd" id="0Bl-br-w2j"/>
+                        <outlet property="loginButton" destination="5C6-6N-69F" id="NDk-yP-UMb"/>
+                        <outlet property="onepasswordSigninButton" destination="Ct8-R6-QAc" id="3af-8K-igA"/>
                         <outlet property="passwordTextField" destination="F2Z-Ze-Ro4" id="1Lb-TQ-EbO"/>
+                        <outlet property="touchIDButton" destination="6mB-Nu-L8x" id="7mQ-6x-vNo"/>
                         <outlet property="usernameTextField" destination="arg-Cj-0Sj" id="hm2-Ja-Xgk"/>
                         <segue destination="mKq-Le-HgQ" kind="unwind" identifier="dismissLogin" unwindAction="unwindSegue:" id="loy-cW-IvI"/>
                     </connections>
@@ -1038,7 +1075,9 @@
     <resources>
         <image name="316_Printer" width="25" height="25"/>
         <image name="Edit Property" width="22" height="22"/>
+        <image name="TouchID" width="138" height="138"/>
         <image name="goButton" width="98" height="96"/>
+        <image name="onepassword-button" width="27" height="28"/>
     </resources>
     <color key="tintColor" red="0.35686274509803922" green="0.29019607843137252" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
 </document>
