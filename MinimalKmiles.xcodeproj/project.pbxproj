@@ -10,6 +10,7 @@
 		962AFC8A1C99C248008BA19D /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962AFC891C99C248008BA19D /* LogInViewController.swift */; };
 		96BE8AA01C99CDFF0090A3C8 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BE8A9F1C99CDFF0090A3C8 /* KeychainWrapper.m */; };
 		96BE8AA31C99FB980090A3C8 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BE8AA21C99FB980090A3C8 /* OnePasswordExtension.m */; };
+		96BE8AA51C9A1E840090A3C8 /* AppSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BE8AA41C9A1E840090A3C8 /* AppSettingsController.swift */; };
 		96F394B81C8FA48F00D5C52E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F394B71C8FA48F00D5C52E /* AppDelegate.swift */; };
 		96F394CA1C8FA51600D5C52E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F394C91C8FA51600D5C52E /* CoreLocation.framework */; };
 		96F395061C8FA61900D5C52E /* editPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F394FF1C8FA61900D5C52E /* editPopOverViewController.swift */; };
@@ -56,6 +57,7 @@
 		96BE8A9F1C99CDFF0090A3C8 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
 		96BE8AA11C99FB980090A3C8 /* OnePasswordExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordExtension.h; sourceTree = "<group>"; };
 		96BE8AA21C99FB980090A3C8 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
+		96BE8AA41C9A1E840090A3C8 /* AppSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettingsController.swift; sourceTree = "<group>"; };
 		96F394B41C8FA48F00D5C52E /* MinimalKmiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinimalKmiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96F394B71C8FA48F00D5C52E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96F394C31C8FA48F00D5C52E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				96F395031C8FA61900D5C52E /* TripViewEditViewController.swift */,
 				96F395041C8FA61900D5C52E /* ViewNotesController.swift */,
 				96F395051C8FA61900D5C52E /* ViewTripsControllerTableViewController.swift */,
+				96BE8AA41C9A1E840090A3C8 /* AppSettingsController.swift */,
 				962AFC891C99C248008BA19D /* LogInViewController.swift */,
 			);
 			name = "View Controllers";
@@ -352,6 +355,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96BE8AA51C9A1E840090A3C8 /* AppSettingsController.swift in Sources */,
 				96FB93441C90EDED00D75AAE /* enums.swift in Sources */,
 				96F395141C8FA6A500D5C52E /* Trip.swift in Sources */,
 				962AFC8A1C99C248008BA19D /* LogInViewController.swift in Sources */,

@@ -23,11 +23,12 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     var locationManager: CoreLocationController!
     var FetchResultsCon: NSFetchedResultsController!
     var resultSearchController = UISearchController(searchResultsController: nil)
-    let userDefaults: NSUserDefaults = NSUserDefaults(suiteName: "group.RedAnchorSoftware.MinimalKmiles")!
+    let prefs = NSUserDefaults(suiteName: "group.RedAnchorSoftware.MinimalKmiles")!
     let printer = ReportPrinter()
     let quires = TripQueries()
     var isAuthenticated = false
     var didReturnFromBackground = false
+    var touchIdEnabled = false
     @IBOutlet weak var LogoutButton: UIBarButtonItem!
     
     
@@ -55,12 +56,26 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     }
     
     override func viewDidAppear(animated: Bool) {
+        touchIdEnabled = prefs.boolForKey("touchID")
+        
+        if touchIdEnabled{
         super.viewDidAppear(false)
         self.showLoginView()
+        } else {
+        super.viewDidAppear(true)
+        }
+        
     }
     
     override func viewDidLoad() {
+        touchIdEnabled = prefs.boolForKey("touchID")
+        
+        if touchIdEnabled{
         view.alpha = 0
+        } else {
+            view.alpha = 1
+        }
+        
         super.viewDidLoad()
         FetchResultsCon = getFetchResultsCon()
         fetch(FetchResultsCon)
@@ -80,13 +95,17 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     }
     
     func appWillResignActive(notification : NSNotification) {
+        touchIdEnabled = prefs.boolForKey("touchID")
+        if touchIdEnabled {
         view.alpha = 0
         isAuthenticated = false
         didReturnFromBackground = true
+        }
     }
     
     func appDidBecomeActive(notification : NSNotification) {
-        if didReturnFromBackground {
+        touchIdEnabled = prefs.boolForKey("touchID")
+        if didReturnFromBackground && touchIdEnabled{
             self.showLoginView()
         }
     }

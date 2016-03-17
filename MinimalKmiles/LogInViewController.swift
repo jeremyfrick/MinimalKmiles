@@ -31,6 +31,9 @@ class LogInViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        loginButton.layer.cornerRadius = 8.0
+        loginButton.layer.masksToBounds = true
+        
         let hasLogin = prefs.boolForKey("hasLoginKey")
         
         if hasLogin {
