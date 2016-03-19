@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ViewTripsControllerTableViewController: UITableViewController, UISearchResultsUpdating, NSFetchedResultsControllerDelegate {
+class ViewTripsControllerTableViewController: UITableViewController, UISearchResultsUpdating, NSFetchedResultsControllerDelegate, UISearchBarDelegate {
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var purposeLabel: UILabel!
@@ -29,6 +29,9 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     var isAuthenticated = false
     var didReturnFromBackground = false
     var touchIdEnabled = false
+    var tripInProgress = 1
+    var measurement: unitOfMeasurement!
+    
     @IBOutlet weak var LogoutButton: UIBarButtonItem!
     
     
@@ -40,7 +43,6 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     override func viewWillAppear(animated: Bool) {
         fetch(FetchResultsCon)
         tableView.reloadData()
-        fetchAndReload()
         self.resultSearchController.searchResultsUpdater = self
         self.resultSearchController.dimsBackgroundDuringPresentation = false
         self.resultSearchController.searchBar.sizeToFit()
@@ -48,11 +50,14 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         self.resultSearchController.hidesNavigationBarDuringPresentation = false
         self.resultSearchController.searchBar.barTintColor = UIColor(red: 91/255, green: 74/255, blue: 34/255, alpha: 1.0)
         self.resultSearchController.searchBar.tintColor = UIColor(red: 195/255, green: 100/255, blue: 53/255, alpha: 1.0)
+        self.resultSearchController.searchBar.translucent = true
         self.resultSearchController.searchBar.showsCancelButton = true
         self.resultSearchController.searchBar.autocapitalizationType = .None
+        self.resultSearchController.searchBar.delegate = self
+        self.definesPresentationContext = true
         self.tableView.tableHeaderView = self.resultSearchController.searchBar
-        
-        definesPresentationContext = true
+        self.navigationController!.navigationBar.translucent = true
+        self.navigationItem.title = "Trip Log"
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -62,16 +67,32 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         super.viewDidAppear(false)
         self.showLoginView()
         } else {
-        super.viewDidAppear(true)
+            tripInProgress = prefs.integerForKey("TripInProgress")
+            if let tripInProgressStatus = currentlyTracking(rawValue: tripInProgress) {
+                if tripInProgressStatus == currentlyTracking.Yes {
+                    self.performSegueWithIdentifier("tripInProgress", sender: self)
+                } else {
+                    super.viewDidAppear(true)
+                }
+            }
+
         }
+        tripInProgress = prefs.integerForKey("TripInProgress")
+        if let tripInProgressStatus = currentlyTracking(rawValue: tripInProgress) {
+            if tripInProgressStatus == currentlyTracking.Yes {
+                self.performSegueWithIdentifier("tripInProgress", sender: self)
         
+            } else {
+                super.viewDidAppear(true)
+            }
+        }
     }
     
     override func viewDidLoad() {
         touchIdEnabled = prefs.boolForKey("touchID")
         
         if touchIdEnabled{
-        view.alpha = 0
+            view.alpha = 0
         } else {
             view.alpha = 1
         }
@@ -122,7 +143,11 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         isAuthenticated = false
         self.performSegueWithIdentifier("loginView", sender: self)
     }
+    
 
+    @IBAction func addTripButtonPressed(sender: AnyObject) {
+        self.performSegueWithIdentifier("newTrip", sender: self)
+    }
 
     
     // MARK: - TableView
@@ -135,6 +160,8 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         let numberOfRowsInSection = FetchResultsCon.sections![section].numberOfObjects
         if numberOfRowsInSection < 1 {
             navigationItem.rightBarButtonItems![1].enabled = false
+        } else {
+            navigationItem.rightBarButtonItems![1].enabled = true
         }
         return numberOfRowsInSection
     }
@@ -142,10 +169,35 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! CustomTableViewCell
-        cell.trip = self.FetchResultsCon.objectAtIndexPath(indexPath) as? Trip
-        cell.tripNotesButton.tag = indexPath.row
+        let trip = self.FetchResultsCon.objectAtIndexPath(indexPath) as? Trip
+        dispatch_async(dispatch_get_main_queue()){
+            cell.tripTitle.text = trip!.purpose
+            
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = .ShortStyle
+            cell.tripDate.text = formatter .stringFromDate(trip!.timestamp)
+            
+            let unitOfMeasurment = trip?.miles
+            self.measurement = unitOfMeasurement(rawValue: Int(unitOfMeasurment!))!
+            
+            if self.measurement == unitOfMeasurement.Kilometers {
+                cell.tripMeasurment.text = "km"
+                cell.tripDistance.text = String.localizedStringWithFormat("%.1f",(trip!.rawdistance / 1000))
+            } else {
+                cell.tripMeasurment.text = "mi"
+                cell.tripDistance.text = String.localizedStringWithFormat("%.1f",(trip!.rawdistance / 1609.344))
+            }
+            if trip?.notes != "" {
+                    cell.tripNotesButton.setImage(UIImage(named: "NoteBook"), forState: UIControlState.Normal)
+                    cell.tripNotesButton.enabled = true
+                } else {
+                     cell.tripNotesButton.enabled = false
+                }
+            
+            }
         return cell
     }
+    
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
@@ -174,24 +226,6 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func fetchAndReload() {
-        let tripsFetch = NSFetchRequest(entityName: "Trip")
-        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: true)
-        tripsFetch.sortDescriptors = [sortDescriptor]
-        do {
-            let result = try managedContext.executeFetchRequest(tripsFetch)
-            self.trips = result as! [Trip]
-            if trips.count == 0 {
-                navigationItem.rightBarButtonItems![1].enabled = false
-            } else {
-                navigationItem.rightBarButtonItems![1].enabled = true
-                currentTrip = trips[0]
-            }
-        } catch let error as NSError {
-            print("Error: \(error.localizedDescription)")
-        }
-        }
     
     func fetch(frcToFetch: NSFetchedResultsController){
         do {
@@ -230,14 +264,12 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
             FetchResultsCon = getFetchResultsCon()
         }
         
-        dispatch_async(dispatch_get_main_queue()){
             self.fetch(self.FetchResultsCon)
             self.tableView.reloadData()
-        }
     }
     
     func refreshTable(refreshCOntrol: UIRefreshControl) {
-        fetch(FetchResultsCon)
+        self.fetch(self.FetchResultsCon)
         refreshControl?.endRefreshing()
     }
     // MARK: - Scene Navigation
@@ -263,9 +295,10 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         else if segue.identifier == "showTripNotes" {
             let viewNotesVC = segue.destinationViewController as! ViewNotesController
             if sender.isKindOfClass(UIButton) {
-                let indexTest = Int(sender.tag)
-                let trip = trips[indexTest]
-                viewNotesVC.selectedTrip = trip
+                let btnPos: CGPoint = sender.convertPoint(CGPointZero, toView: self.tableView)
+                let indexPath: NSIndexPath = self.tableView.indexPathForRowAtPoint(btnPos)!
+                let trip = self.FetchResultsCon.objectAtIndexPath(indexPath)
+                viewNotesVC.selectedTrip = trip as! Trip
             }
 
         }else if segue.identifier == "newTrip" {
@@ -275,6 +308,14 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
                         newTripVC.locationManager = locationManager
                         newTripVC.navigationItem.rightBarButtonItem?.enabled = true
 
-            }
+        } else if segue.identifier == "tripInProgress" {
+            let inProgressTripVC = segue.destinationViewController as! TripInProgressViewController
+            inProgressTripVC.managedObjectContext = managedContext
+            inProgressTripVC.coreDataStack = coreDataStack
+            inProgressTripVC.locationManager = locationManager
+            let index = trips.count - 1
+            inProgressTripVC.currentTrip = trips[index]
+            //inProgressTripVC.navigationItem.rightBarButtonItem?.enabled = true
+        }
     }
 }

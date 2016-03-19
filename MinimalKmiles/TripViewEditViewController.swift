@@ -47,6 +47,7 @@ class TripViewEditViewController: UIViewController {
             tripNotes.editable = false
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TripViewEditViewController.tripInfoUpdated(_:)), name: "TRIP_UPDATE", object: trip)
+        navigationItem.title = trip?.purpose
     }
     
     // MARK: - ToolBar Buttons

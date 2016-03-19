@@ -12,23 +12,21 @@ import CoreData
 
 class TripInProgressViewController: UIViewController {
 
-    let userDefaults: NSUserDefaults = NSUserDefaults(suiteName: "group.RedAnchorSoftware.MinimalKmiles")!
-    @IBOutlet weak var ReturnToListOfTripsButton: UIButton!
-    @IBOutlet weak var currentMilageLabel: UILabel!
-    @IBOutlet weak var purposeOfTrip: UITextField!
+    let prefs = NSUserDefaults(suiteName:"group.RedAnchorSoftware.MinimalKmiles")!
+ 
+    @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var unitOfMeasurementSwitch: UISegmentedControl!
-    @IBOutlet weak var tripToolBar: UIToolbar!
+    @IBOutlet weak var purposeOfTrip: UITextField!
+    @IBOutlet weak var stopStartTripButton: UIButton!
+    @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var shareButton: UIBarButtonItem!
-    @IBOutlet weak var startStopTripButton: UIBarButtonItem!
-    @IBOutlet weak var printReportButton: UIBarButtonItem!
     
     var currentTrip: Trip!
-    var tripStatus = String()
-    var tripMeasurement = Int()
-    var tripDistance = Double()
-    var tripPurpose = String()
     var managedObjectContext : NSManagedObjectContext!
     var coreDataStack: CoreDataStack!
+    var locationManager: CoreLocationController!
+    var measurement: unitOfMeasurement!
+    let converter = Converter()
 
     
     override func viewWillAppear(animated: Bool) {
@@ -36,21 +34,66 @@ class TripInProgressViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        purposeOfTrip.text = currentTrip.purpose
+        purposeOfTrip.text = prefs.stringForKey("purpose")
+        stopStartTripButton.setImage(UIImage(named: "stopButton"), forState: .Normal)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TripInProgressViewController.distanceUpdated(_:)), name: "DISTANCE_UPDATE", object: nil)
         
-//        tripStatus = userDefaults.stringForKey("Status")!
-//        tripMeasurement = userDefaults.integerForKey("measurment")
-//        tripDistance = userDefaults.doubleForKey("TripInProgress")
-//        tripPurpose = userDefaults.stringForKey("purpose")!
-        //self.purposeOfTripLabel.text = tripPurpose
-
-        // Do any additional setup after loading the view.
+        let measurementCheck = Int(currentTrip.miles)
+        switch measurementCheck {
+        case 1:
+            self.unitOfMeasurementSwitch.selectedSegmentIndex = 1
+            measurement = unitOfMeasurement.Kilometers
+        case 0:
+            self.unitOfMeasurementSwitch.selectedSegmentIndex = 0
+            measurement = unitOfMeasurement.Miles
+        default:
+            break
+            }
+        navigationItem.title = prefs.stringForKey("purpose")
     }
+    
+    func distanceUpdated(notification:NSNotification) {
+        let userInfo = notification.userInfo as! Dictionary<String,Double>
+        if let newDistance = userInfo["distance"]{
+            currentTrip.rawdistance = newDistance
+            distanceLabel.text = converter.convert(unitOfMeasurementSwitch.selectedSegmentIndex , distance: newDistance)
+        }
+    }
+
+    @IBAction func unitOfMeasurementSelectionChanged(sender: AnyObject) {
+        if (unitOfMeasurementSwitch.selectedSegmentIndex == 0){
+            measurement = unitOfMeasurement.Miles
+            distanceLabel.text = String.localizedStringWithFormat("%.1f",((currentTrip.rawdistance) / 1609.344))
+            
+        }else {
+            measurement = unitOfMeasurement.Kilometers
+            distanceLabel.text = String.localizedStringWithFormat("%.1f",((currentTrip.rawdistance) / 1000))
+            
+        }
+
+    }
+    
+    @IBAction func startStopButtonPressed(sender: AnyObject) {
+        let updatedTripInProgressStatus = currentlyTracking.No
+        prefs.setInteger(updatedTripInProgressStatus.rawValue, forKey: "TripInProgress")
+        locationManager.StopTrip()
+        currentTrip.miles = Int16(measurement.rawValue)
+        currentTrip.purpose = purposeOfTrip.text!
+        currentTrip.distance = 0
+        do {
+            try managedObjectContext.save()
+        } catch let error as NSError {
+            print("error: \(error.localizedDescription)")
+        }
+
+        }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
 
     /*

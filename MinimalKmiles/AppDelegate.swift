@@ -12,25 +12,36 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var coreLocationController = CoreLocationController()
-    var tableSetupQueue: NSOperationQueue?
     lazy var coreDataStack = CoreDataStack()
+    let prefs = NSUserDefaults(suiteName: "group.RedAnchorSoftware.MinimalKmiles")!
     var window: UIWindow?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         setupAppearance()
-        let queue = NSOperationQueue()
-        queue.name = "\(self) tableSetupQueue"
-        tableSetupQueue = queue
         let navigationController = self.window!.rootViewController as! UINavigationController
         let viewController = navigationController.topViewController as! ViewTripsControllerTableViewController
         viewController.managedContext = coreDataStack.context
         viewController.locationManager = coreLocationController
         IQKeyboardManager.sharedManager().enable = true
-        
+        self.isAppAlreadyLaunchedOnce()
         return true
     }
+    
+    func isAppAlreadyLaunchedOnce()->Bool{
+        
+        if let isAppAlreadyLaunchedOnce = prefs.stringForKey("isAppAlreadyLaunchedOnce"){
+            print("App already launched")
+            return true
+        }else{
+            prefs.setBool(true, forKey: "isAppAlreadyLaunchedOnce")
+            print("App launched first time")
+            prefs.setInteger(1, forKey: "TripInProgress")
+            return false
+        }
+    }
+    
     func setupAppearance() {
         
         let navigationBarAppearance = UINavigationBar.appearance()

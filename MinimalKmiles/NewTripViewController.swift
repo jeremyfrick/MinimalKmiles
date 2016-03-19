@@ -90,6 +90,11 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
                 trip = Trip(entity: tripEnitity!, insertIntoManagedObjectContext: managedObjectContext)
                 trip!.timestamp = NSDate()
                 locationManager.beginTrip()
+                do {
+                    try managedObjectContext.save()
+                } catch let error as NSError {
+                    print("error: \(error.localizedDescription)")
+                }
                 
             case .Yes:
                 let updatedTripInProgressStatus = currentlyTracking.No
@@ -205,6 +210,7 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
     func textFieldDidEndEditing(textField: UITextField) {
         let purposeText = purposeTextBox.text
         prefs.setObject(purposeText, forKey: "purpose")
+        navigationItem.title = purposeText
     }
     func textFieldShouldReturn(textField: UITextField) -> Bool {   //delegate method
         
