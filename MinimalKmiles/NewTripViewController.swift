@@ -21,8 +21,8 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
     @IBOutlet weak var stopStartButton: UIButton!
     
     var tripPurpose: String!
-    var managedObjectContext: NSManagedObjectContext!
-    var coreDataStack: CoreDataStack!
+    //var managedObjectContext: NSManagedObjectContext!
+    var stack: CoreDataStack!
     var locationManager: CoreLocationController!
     var milageReport: UISimpleTextPrintFormatter!
     let prefs = NSUserDefaults(suiteName:"group.RedAnchorSoftware.MinimalKmiles")!
@@ -87,8 +87,8 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
                 shareCurrentTripButton.enabled = false
                 stopStartButton.setImage(UIImage(named: "stopButton"), forState: .Normal)
                 
-                let tripEnitity = NSEntityDescription.entityForName("Trip", inManagedObjectContext: managedObjectContext)
-                trip = Trip(entity: tripEnitity!, insertIntoManagedObjectContext: managedObjectContext)
+                let tripEnitity = NSEntityDescription.entityForName("Trip", inManagedObjectContext: stack.context)
+                trip = Trip(entity: tripEnitity!, insertIntoManagedObjectContext: stack.context)
                 if purposeTextBox.text != "" {
                     trip!.purpose = purposeTextBox.text!
                 } else {
@@ -98,24 +98,26 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
                 trip!.tripInProgress = true
                 locationManager.beginTrip()
                 do {
-                    try managedObjectContext.save()
+                    try stack.context.save()
                 } catch let error as NSError {
                     print("error: \(error.localizedDescription)")
                 }
-                
+                print("\(trip)")
+            
             case .Yes:
                 let updatedTripInProgressStatus = currentlyTracking.No
                 prefs.setInteger(updatedTripInProgressStatus.rawValue, forKey: "TripInProgress")
                 locationManager.StopTrip()
                 trip!.miles = Int16(measurement.rawValue)
-                trip!.purpose = purposeTextBox.text!
+                //trip!.purpose = purposeTextBox.text!
                 trip!.distance = 0
                 trip!.tripInProgress = false
                 do {
-                    try managedObjectContext.save()
+                    try stack.context.save()
                 } catch let error as NSError {
                     print("error: \(error.localizedDescription)")
                 }
+                print("\(trip)")
                 shareCurrentTripButton.enabled = true
                 UIView.animateWithDuration(5.0, delay: 0.0, options: .TransitionCrossDissolve, animations: {
                     self.stopStartButton.setImage(UIImage(named: "goButton"), forState: .Normal)

@@ -22,8 +22,9 @@ class TripInProgressViewController: UIViewController {
     @IBOutlet weak var shareButton: UIBarButtonItem!
     
     var currentTrip: Trip!
-    var managedObjectContext : NSManagedObjectContext!
-    var coreDataStack: CoreDataStack!
+    var trips: [Trip]! = []
+    var editTrip: Trip!
+    var stack: CoreDataStack!
     var locationManager: CoreLocationController!
     var measurement: unitOfMeasurement!
     let converter = Converter()
@@ -34,10 +35,10 @@ class TripInProgressViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        purposeOfTrip.text = prefs.stringForKey("purpose")
+        
         stopStartTripButton.setImage(UIImage(named: "stopButton"), forState: .Normal)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TripInProgressViewController.distanceUpdated(_:)), name: "DISTANCE_UPDATE", object: nil)
-        
+        currentTrip = checkforTripInProgress()
         let measurementCheck = Int(currentTrip.miles)
         switch measurementCheck {
         case 1:
@@ -49,9 +50,49 @@ class TripInProgressViewController: UIViewController {
         default:
             break
             }
-        navigationItem.title = prefs.stringForKey("purpose")
+        purposeOfTrip.text = currentTrip.purpose
+        navigationItem.title = currentTrip.purpose
         self.stopStartTripButton.enabled = true
     }
+    
+    func checkforTripInProgress() -> Trip {
+        let fetchRequest = NSFetchRequest(entityName: "Trip")
+        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
+        let predicate = NSPredicate(format: "tripInProgress = 1")
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.predicate = predicate
+
+        do {
+            try trips = stack.context.executeFetchRequest(fetchRequest) as! [Trip]
+        } catch let error as NSError {
+            print("Error: \(error)")
+        }
+        print([trips])
+        return trips[0]
+    
+
+    }
+    func clearAllInProgressTrips(){
+        let fetchRequest = NSFetchRequest(entityName: "Trip")
+        let predicate = NSPredicate(format: "tripInProgress = 1")
+        fetchRequest.predicate = predicate
+        
+        do {
+            //let trip = Trip()
+            let fetchedTrips = try stack.context.executeFetchRequest(fetchRequest)
+            for oldtrip in fetchedTrips {
+                (oldtrip as! Trip).tripInProgress = false
+            }
+        } catch let error as NSError {
+            print("Error: \(error)")
+        }
+        do {
+            try stack.context.save()
+        } catch let error as NSError {
+            print("Error: \(error)")
+        }
+    }
+
     
     func distanceUpdated(notification:NSNotification) {
         let userInfo = notification.userInfo as! Dictionary<String,Double>
@@ -83,11 +124,13 @@ class TripInProgressViewController: UIViewController {
         currentTrip.distance = 0
         currentTrip.tripInProgress = false
         do {
-            try managedObjectContext.save()
+            try stack.context.save()
         } catch let error as NSError {
             print("error: \(error.localizedDescription)")
         }
         self.stopStartTripButton.enabled = false
+        print("\(currentTrip)")
+        clearAllInProgressTrips()
     }
 
 

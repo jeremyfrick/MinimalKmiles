@@ -9,7 +9,7 @@
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="tripInProgress" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
-    <fetchRequest name="tripInProgress" entity="Trip" predicateString="tripInProgress == 0"/>
+    <fetchRequest name="tripInProgress" entity="Trip" predicateString="tripInProgress == 1"/>
     <elements>
         <element name="Trip" positionX="-351" positionY="-45" width="128" height="150"/>
     </elements>

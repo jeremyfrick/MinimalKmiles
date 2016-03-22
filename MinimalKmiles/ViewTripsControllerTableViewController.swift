@@ -79,6 +79,7 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         touchIdEnabled = prefs.boolForKey("touchID")
         if touchIdEnabled{
         super.viewDidAppear(false)
+        view.alpha = 0
         self.showLoginView()
         } else {
             tripInProgress = prefs.integerForKey("TripInProgress")
@@ -91,11 +92,11 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
             }
 
         }
+        view.alpha = 1
         tripInProgress = prefs.integerForKey("TripInProgress")
         if let tripInProgressStatus = currentlyTracking(rawValue: tripInProgress) {
             if tripInProgressStatus == currentlyTracking.Yes {
                 self.performSegueWithIdentifier("tripInProgress", sender: self)
-        
             } else {
                 super.viewDidAppear(true)
             }
@@ -332,18 +333,18 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
 
         }else if segue.identifier == "newTrip" {
                 let newTripVC = segue.destinationViewController as! NewTripViewController
-                        newTripVC.managedObjectContext = self.stack.context
-                        newTripVC.coreDataStack = stack
+                        //newTripVC.managedObjectContext = self.stack.context
+                        newTripVC.stack = stack
                         newTripVC.locationManager = locationManager
                         newTripVC.navigationItem.rightBarButtonItem?.enabled = true
 
         } else if segue.identifier == "tripInProgress" {
             let inProgressTripVC = segue.destinationViewController as! TripInProgressViewController
-            inProgressTripVC.managedObjectContext = self.stack.context
-            inProgressTripVC.coreDataStack = stack
+            //inProgressTripVC.managedObjectContext = self.stack.context
+            inProgressTripVC.stack = stack
             inProgressTripVC.locationManager = locationManager
-            checkforTripInProgress()
-            inProgressTripVC.currentTrip = trips[0]
+            //checkforTripInProgress()
+            //inProgressTripVC.currentTrip = trips[0]
         }
     }
 }
