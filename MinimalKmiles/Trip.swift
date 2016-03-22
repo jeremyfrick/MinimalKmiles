@@ -16,4 +16,5 @@ class Trip: NSManagedObject {
     @NSManaged var timestamp: NSDate
     @NSManaged var rawdistance: Double
     @NSManaged var notes: String
+    @NSManaged var tripInProgress: Bool
 }

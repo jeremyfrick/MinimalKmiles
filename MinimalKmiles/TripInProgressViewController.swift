@@ -50,6 +50,7 @@ class TripInProgressViewController: UIViewController {
             break
             }
         navigationItem.title = prefs.stringForKey("purpose")
+        self.stopStartTripButton.enabled = true
     }
     
     func distanceUpdated(notification:NSNotification) {
@@ -80,13 +81,14 @@ class TripInProgressViewController: UIViewController {
         currentTrip.miles = Int16(measurement.rawValue)
         currentTrip.purpose = purposeOfTrip.text!
         currentTrip.distance = 0
+        currentTrip.tripInProgress = false
         do {
             try managedObjectContext.save()
         } catch let error as NSError {
             print("error: \(error.localizedDescription)")
         }
-
-        }
+        self.stopStartTripButton.enabled = false
+    }
 
 
     override func didReceiveMemoryWarning() {

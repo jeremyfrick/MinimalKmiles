@@ -86,9 +86,16 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
                 prefs.setInteger(updatedTripInProgressStatus.rawValue, forKey: "TripInProgress")
                 shareCurrentTripButton.enabled = false
                 stopStartButton.setImage(UIImage(named: "stopButton"), forState: .Normal)
+                
                 let tripEnitity = NSEntityDescription.entityForName("Trip", inManagedObjectContext: managedObjectContext)
                 trip = Trip(entity: tripEnitity!, insertIntoManagedObjectContext: managedObjectContext)
+                if purposeTextBox.text != "" {
+                    trip!.purpose = purposeTextBox.text!
+                } else {
+                    trip?.purpose = "Current trip in progress"
+                }
                 trip!.timestamp = NSDate()
+                trip!.tripInProgress = true
                 locationManager.beginTrip()
                 do {
                     try managedObjectContext.save()
@@ -103,6 +110,7 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
                 trip!.miles = Int16(measurement.rawValue)
                 trip!.purpose = purposeTextBox.text!
                 trip!.distance = 0
+                trip!.tripInProgress = false
                 do {
                     try managedObjectContext.save()
                 } catch let error as NSError {

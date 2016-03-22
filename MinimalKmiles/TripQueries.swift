@@ -17,7 +17,7 @@ class TripQueries {
     func getTripsForReport(test: NSManagedObjectContext)->Array<Trip> {
 
         let fReq: NSFetchRequest = NSFetchRequest(entityName: "Trip")
-        let sorter : NSSortDescriptor = NSSortDescriptor(key: "timestamp", ascending: true)
+        let sorter : NSSortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
         fReq.sortDescriptors = [sorter]
         
         fReq.returnsObjectsAsFaults = false
@@ -42,7 +42,7 @@ class TripQueries {
         
         let fReq: NSFetchRequest = NSFetchRequest(entityName: "Trip")
         fReq.predicate = NSPredicate(format: "timestamp >= %@ AND timestamp <= %@", startDate!, today)
-        let sorter : NSSortDescriptor = NSSortDescriptor(key: "timestamp", ascending: true)
+        let sorter : NSSortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
         fReq.sortDescriptors = [sorter]
         
         fReq.returnsObjectsAsFaults = false
@@ -68,7 +68,7 @@ class TripQueries {
         
         let fReq: NSFetchRequest = NSFetchRequest(entityName: "Trip")
         fReq.predicate = NSPredicate(format: "timestamp >= %@ AND timestamp <= %@", modifiedStartDate!, endDate)
-        let sorter : NSSortDescriptor = NSSortDescriptor(key: "timestamp", ascending: true)
+        let sorter : NSSortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
         fReq.sortDescriptors = [sorter]
         fReq.returnsObjectsAsFaults = false
         

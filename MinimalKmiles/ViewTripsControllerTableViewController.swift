@@ -16,7 +16,7 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     @IBOutlet weak var measurementLabel: UILabel!
     @IBOutlet weak var TripInProgressButton: UIButton!
     
-    var coreDataStack: CoreDataStack!
+    var stack: CoreDataStack!
     var trips: [Trip]! = []
     var currentTrip: Trip!
     var managedContext: NSManagedObjectContext!
@@ -32,17 +32,34 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
     var tripInProgress = 1
     var measurement: unitOfMeasurement!
     
-    @IBOutlet weak var LogoutButton: UIBarButtonItem!
     
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    var persistentStoreCoordinatorChangesObserver: NSNotificationCenter? {
+        didSet {
+            oldValue?.removeObserver(self,
+            name: NSPersistentStoreCoordinatorStoresDidChangeNotification,
+            object: stack.coordinator)
+            
+            persistentStoreCoordinatorChangesObserver?.addObserver(self,
+                    selector: #selector(ViewTripsControllerTableViewController.persistentStoreCoordinatorDidChangeStores(_:)),
+                    name: NSPersistentStoreCoordinatorStoresDidChangeNotification,
+                    object: stack.coordinator)
+        }
     }
     
-    
     override func viewWillAppear(animated: Bool) {
+        
+        self.navigationController!.navigationBar.translucent = true
+        self.navigationItem.title = "Trip Log"
+        FetchResultsCon = getFetchResultsCon()
         fetch(FetchResultsCon)
         tableView.reloadData()
+        stack.updateContextWithUbiquitousContentUpdates = true
+        persistentStoreCoordinatorChangesObserver = NSNotificationCenter.defaultCenter()
+        setupSeachBar()
+
+    }
+    
+    func setupSeachBar() {
         self.resultSearchController.searchResultsUpdater = self
         self.resultSearchController.dimsBackgroundDuringPresentation = false
         self.resultSearchController.searchBar.sizeToFit()
@@ -56,13 +73,10 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         self.resultSearchController.searchBar.delegate = self
         self.definesPresentationContext = true
         self.tableView.tableHeaderView = self.resultSearchController.searchBar
-        self.navigationController!.navigationBar.translucent = true
-        self.navigationItem.title = "Trip Log"
     }
     
     override func viewDidAppear(animated: Bool) {
         touchIdEnabled = prefs.boolForKey("touchID")
-        
         if touchIdEnabled{
         super.viewDidAppear(false)
         self.showLoginView()
@@ -98,15 +112,12 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
         }
         
         super.viewDidLoad()
-        FetchResultsCon = getFetchResultsCon()
-        fetch(FetchResultsCon)
+        
         
         self.refreshControl?.addTarget(self, action: #selector(ViewTripsControllerTableViewController.refreshTable(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewTripsControllerTableViewController.appWillResignActive(_:)), name: UIApplicationWillResignActiveNotification, object: nil)
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewTripsControllerTableViewController.appDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
-        
-        
         tableView.estimatedRowHeight = 46.0
     }
     
@@ -234,17 +245,27 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
             return
         }
     }
+    func checkforTripInProgress() {
+        let fetchRequest = stack.model.fetchRequestTemplateForName("tripInProgress") //NSFetchRequest(entityName: "Trip")
+        do {
+            try trips = stack.context.executeFetchRequest(fetchRequest!) as! [Trip]
+        } catch let error as NSError {
+            print("Error: \(error)")
+        }
+
+    }
     
     func fetchRequest() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: "Trip")
-        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: true)
+        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
+        
         return fetchRequest
         
     }
     
     func getFetchResultsCon() -> NSFetchedResultsController {
-        FetchResultsCon = NSFetchedResultsController(fetchRequest: fetchRequest(), managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: nil)
+        FetchResultsCon = NSFetchedResultsController(fetchRequest: fetchRequest(), managedObjectContext: self.stack.context, sectionNameKeyPath: nil, cacheName: nil)
         
        
         return FetchResultsCon
@@ -268,10 +289,18 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
             self.tableView.reloadData()
     }
     
-    func refreshTable(refreshCOntrol: UIRefreshControl) {
+    func refreshTable(refreshControl: UIRefreshControl) {
         self.fetch(self.FetchResultsCon)
-        refreshControl?.endRefreshing()
+        refreshControl.endRefreshing()
     }
+    
+    func persistentStoreCoordinatorDidChangeStores(notification:NSNotification) {
+     
+        fetch(self.FetchResultsCon)
+
+        tableView.reloadData()
+    }
+
     // MARK: - Scene Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
@@ -281,15 +310,15 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
                 if let selectedIndex = tableView.indexPathForCell(cell) {
                     let trip = self.FetchResultsCon.objectAtIndexPath(selectedIndex)
                     editTripVC.trip = trip as! Trip
-                    editTripVC.managedObjectContext = managedContext
-                    editTripVC.coreDataStack = coreDataStack
+                    editTripVC.managedObjectContext = self.stack.context
+                    editTripVC.coreDataStack = stack
                 }
         }
 
         else if segue.identifier == "filterReports" {
                 let reportsVC = segue.destinationViewController as! FilterPrintReportsViewController
-                        reportsVC.managedObjectContext = managedContext
-                        reportsVC.coreDataStack = coreDataStack
+                        reportsVC.managedObjectContext = self.stack.context
+                        reportsVC.coreDataStack = stack
             }
             
         else if segue.identifier == "showTripNotes" {
@@ -303,19 +332,18 @@ class ViewTripsControllerTableViewController: UITableViewController, UISearchRes
 
         }else if segue.identifier == "newTrip" {
                 let newTripVC = segue.destinationViewController as! NewTripViewController
-                        newTripVC.managedObjectContext = managedContext
-                        newTripVC.coreDataStack = coreDataStack
+                        newTripVC.managedObjectContext = self.stack.context
+                        newTripVC.coreDataStack = stack
                         newTripVC.locationManager = locationManager
                         newTripVC.navigationItem.rightBarButtonItem?.enabled = true
 
         } else if segue.identifier == "tripInProgress" {
             let inProgressTripVC = segue.destinationViewController as! TripInProgressViewController
-            inProgressTripVC.managedObjectContext = managedContext
-            inProgressTripVC.coreDataStack = coreDataStack
+            inProgressTripVC.managedObjectContext = self.stack.context
+            inProgressTripVC.coreDataStack = stack
             inProgressTripVC.locationManager = locationManager
-            let index = trips.count - 1
-            inProgressTripVC.currentTrip = trips[index]
-            //inProgressTripVC.navigationItem.rightBarButtonItem?.enabled = true
+            checkforTripInProgress()
+            inProgressTripVC.currentTrip = trips[0]
         }
     }
 }

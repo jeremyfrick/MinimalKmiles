@@ -12,9 +12,18 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var coreLocationController = CoreLocationController()
-    lazy var coreDataStack = CoreDataStack()
+    //lazy var coreDataStack = CoreDataStack()
     let prefs = NSUserDefaults(suiteName: "group.RedAnchorSoftware.MinimalKmiles")!
     var window: UIWindow?
+    lazy var stack : CoreDataStack = {
+        let options = [
+            NSPersistentStoreUbiquitousContentNameKey: "MinimalKmiles",
+            NSMigratePersistentStoresAutomaticallyOption: true,
+            NSInferMappingModelAutomaticallyOption: true
+        ]
+        return CoreDataStack(modelName: "MinimalKmiles", storeName: "MinimalKmiles", options: options)
+    }()
+
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -22,7 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupAppearance()
         let navigationController = self.window!.rootViewController as! UINavigationController
         let viewController = navigationController.topViewController as! ViewTripsControllerTableViewController
-        viewController.managedContext = coreDataStack.context
+        viewController.managedContext = stack.context
+        viewController.stack = stack
         viewController.locationManager = coreLocationController
         IQKeyboardManager.sharedManager().enable = true
         self.isAppAlreadyLaunchedOnce()
@@ -63,7 +73,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        coreDataStack.saveContext()
+        do {
+            try stack.context.save()
+        } catch let error as NSError {
+            print("Error saving \(error)", terminator: "")
+        }
+
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -76,7 +91,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        coreDataStack.saveContext()
+        do {
+            try stack.context.save()
+        } catch let error as NSError {
+            print("Error saving \(error)", terminator: "")
+        }
     }
 
 

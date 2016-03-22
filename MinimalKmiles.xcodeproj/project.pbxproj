@@ -10,6 +10,7 @@
 		962AFC8A1C99C248008BA19D /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962AFC891C99C248008BA19D /* LogInViewController.swift */; };
 		96BE8AA01C99CDFF0090A3C8 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BE8A9F1C99CDFF0090A3C8 /* KeychainWrapper.m */; };
 		96BE8AA51C9A1E840090A3C8 /* AppSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BE8AA41C9A1E840090A3C8 /* AppSettingsController.swift */; };
+		96DA061E1C9D19B600A84E27 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DA061D1C9D19B600A84E27 /* CloudKit.framework */; };
 		96F394B81C8FA48F00D5C52E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F394B71C8FA48F00D5C52E /* AppDelegate.swift */; };
 		96F394CA1C8FA51600D5C52E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F394C91C8FA51600D5C52E /* CoreLocation.framework */; };
 		96F395061C8FA61900D5C52E /* editPopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F394FF1C8FA61900D5C52E /* editPopOverViewController.swift */; };
@@ -55,6 +56,7 @@
 		96BE8A9E1C99CDFF0090A3C8 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
 		96BE8A9F1C99CDFF0090A3C8 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
 		96BE8AA41C9A1E840090A3C8 /* AppSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettingsController.swift; sourceTree = "<group>"; };
+		96DA061D1C9D19B600A84E27 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		96F394B41C8FA48F00D5C52E /* MinimalKmiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinimalKmiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96F394B71C8FA48F00D5C52E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96F394C31C8FA48F00D5C52E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96F394CA1C8FA51600D5C52E /* CoreLocation.framework in Frameworks */,
+				96DA061E1C9D19B600A84E27 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +138,7 @@
 		96F394AB1C8FA48F00D5C52E = {
 			isa = PBXGroup;
 			children = (
+				96DA061D1C9D19B600A84E27 /* CloudKit.framework */,
 				96F394C91C8FA51600D5C52E /* CoreLocation.framework */,
 				96F394B61C8FA48F00D5C52E /* MinimalKmiles */,
 				96F394B51C8FA48F00D5C52E /* Products */,
@@ -307,6 +311,9 @@
 								enabled = 1;
 							};
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
