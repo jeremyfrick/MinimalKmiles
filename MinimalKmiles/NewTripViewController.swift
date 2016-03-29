@@ -164,7 +164,7 @@ class NewTripViewController: UIViewController, UITextFieldDelegate, MFMailCompos
         case 0:
             printData = printer.buildShareReport("Miles", distanceTravled: distanceLabel.text!, purposeOfTrip: purposeTextBox.text!)
         case 1:
-            printData = printer.buildShareReport("kilometers", distanceTravled: distanceLabel.text!, purposeOfTrip: purposeTextBox.text!)
+            printData = printer.buildShareReport("km", distanceTravled: distanceLabel.text!, purposeOfTrip: purposeTextBox.text!)
         default:
             break
         }

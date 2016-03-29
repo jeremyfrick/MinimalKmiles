@@ -28,9 +28,15 @@ class TripInProgressViewController: UIViewController {
     var locationManager: CoreLocationController!
     var measurement: unitOfMeasurement!
     let converter = Converter()
+    let printer = ReportPrinter()
+    
 
     
     override func viewWillAppear(animated: Bool) {
+        
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
         
     }
     override func viewDidLoad() {
@@ -53,6 +59,7 @@ class TripInProgressViewController: UIViewController {
         purposeOfTrip.text = currentTrip.purpose
         navigationItem.title = currentTrip.purpose
         self.stopStartTripButton.enabled = true
+        shareButton.enabled = false
     }
     
     func checkforTripInProgress() -> Trip {
@@ -129,9 +136,54 @@ class TripInProgressViewController: UIViewController {
             print("error: \(error.localizedDescription)")
         }
         self.stopStartTripButton.enabled = false
+        shareButton.enabled = true
         print("\(currentTrip)")
         clearAllInProgressTrips()
     }
+
+    
+    @IBAction func shareButtonPressed(sender: AnyObject) {
+        var printData = ("","")
+        switch unitOfMeasurementSwitch.selectedSegmentIndex {
+        case 0:
+            printData = printer.buildShareReport("Miles", distanceTravled: distanceLabel.text!, purposeOfTrip: purposeOfTrip.text!)
+        case 1:
+            printData = printer.buildShareReport("km", distanceTravled: distanceLabel.text!, purposeOfTrip: purposeOfTrip.text!)
+        default:
+            break
+        }
+        let printerData = UISimpleTextPrintFormatter(text:printData.0 as String)
+        printerData.contentInsets = UIEdgeInsetsMake(72.0, 72.0, 72.0, 72.0)
+        
+        let itemsToShare = [printData.1,printerData]
+        let activityVC = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
+        let popoverVC = activityVC as UIViewController
+        popoverVC.modalPresentationStyle = .Popover
+        
+        let popoverController = popoverVC.popoverPresentationController
+        popoverController?.sourceView = toolbar as UIView
+        popoverController?.sourceRect = toolbar.bounds
+        popoverController?.permittedArrowDirections = .Any
+        presentViewController(popoverVC, animated: true, completion: nil)
+    }
+    
+    func shareTextImageAndURL(sharingText sharingText: String?, sharingImage: UIImage?, sharingURL: NSURL?) {
+        var sharingItems = [AnyObject]()
+        
+        if let text = sharingText {
+            sharingItems.append(text)
+        }
+        if let image = sharingImage {
+            sharingItems.append(image)
+        }
+        if let url = sharingURL {
+            sharingItems.append(url)
+        }
+        
+        let activityViewController = UIActivityViewController(activityItems: sharingItems, applicationActivities: nil)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
+
 
 
     override func didReceiveMemoryWarning() {

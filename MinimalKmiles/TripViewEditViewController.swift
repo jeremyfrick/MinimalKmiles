@@ -56,12 +56,13 @@ class TripViewEditViewController: UIViewController {
         
         let purpose = self.purposeLabel.text
         var printData = ("","")
+        let printDistance = converter.convert(Int((trip?.miles)!), distance: (trip?.rawdistance)!)
         if let test = unitOfMeasurement(rawValue: Int((trip?.miles)!)) {
             switch test {
             case .Miles:
-                printData = printer.buildShareReport("Miles", distanceTravled: "50", purposeOfTrip: purpose!)
+                printData = printer.buildShareReport("Miles", distanceTravled: printDistance, purposeOfTrip: purpose!)
             case .Kilometers:
-                printData = printer.buildShareReport("kilometers", distanceTravled: "50", purposeOfTrip: purpose!)
+                printData = printer.buildShareReport("km", distanceTravled: printDistance, purposeOfTrip: purpose!)
             }
         }
         let printerData = UISimpleTextPrintFormatter(text:printData.0 as String)

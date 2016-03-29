@@ -329,16 +329,6 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Thi-NS-AVW">
-                                <rect key="frame" x="0.0" y="492" width="600" height="44"/>
-                                <color key="backgroundColor" red="0.35686274509999999" green="0.2901960784" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <barButtonItem systemItem="action" id="nhV-oj-e7L"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="9iA-hW-iny"/>
-                                </items>
-                                <color key="tintColor" red="0.76470588240000004" green="0.3921568627" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="barTintColor" red="0.35686274509999999" green="0.2901960784" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                            </toolbar>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="29" translatesAutoresizingMaskIntoConstraints="NO" id="ZwL-Bp-sBF">
                                 <rect key="frame" x="153" y="255" width="295" height="155"/>
                                 <subviews>
@@ -386,29 +376,43 @@
                                 </subviews>
                                 <variation key="widthClass=compact" spacing="40"/>
                             </stackView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4JG-Dx-ef9">
+                                <rect key="frame" x="0.0" y="492" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem systemItem="action" id="wr0-2s-hOs">
+                                        <connections>
+                                            <action selector="shareButtonPressed:" destination="Gzk-lS-1hc" id="ajO-ye-Lod"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="tintColor" red="0.76470588240000004" green="0.3921568627" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="barTintColor" red="0.35686274509999999" green="0.2901960784" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="4JG-Dx-ef9" firstAttribute="leading" secondItem="Vcj-3I-eHG" secondAttribute="leadingMargin" constant="-20" id="3Lh-gD-6Xr"/>
                             <constraint firstItem="smn-5R-FyX" firstAttribute="top" secondItem="iDa-aS-tdm" secondAttribute="bottom" constant="92" id="AOY-w2-0mD"/>
+                            <constraint firstItem="4JG-Dx-ef9" firstAttribute="leading" secondItem="Vcj-3I-eHG" secondAttribute="leading" id="Fbu-h7-chp"/>
                             <constraint firstItem="smn-5R-FyX" firstAttribute="leading" secondItem="Vcj-3I-eHG" secondAttribute="leadingMargin" constant="50" id="HsW-LT-VoM"/>
-                            <constraint firstItem="Thi-NS-AVW" firstAttribute="leading" secondItem="Vcj-3I-eHG" secondAttribute="leading" id="KIY-QI-dmG"/>
                             <constraint firstItem="ZwL-Bp-sBF" firstAttribute="top" secondItem="smn-5R-FyX" secondAttribute="bottom" constant="59" id="Sib-OS-eFB"/>
-                            <constraint firstItem="Thi-NS-AVW" firstAttribute="bottom" secondItem="mGb-60-cot" secondAttribute="top" id="gj1-Xm-9ES"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4JG-Dx-ef9" secondAttribute="trailing" constant="-20" id="jVw-WE-3NG"/>
                             <constraint firstItem="ZwL-Bp-sBF" firstAttribute="centerX" secondItem="Vcj-3I-eHG" secondAttribute="centerX" id="qaj-Cq-qGO"/>
+                            <constraint firstItem="4JG-Dx-ef9" firstAttribute="bottom" secondItem="mGb-60-cot" secondAttribute="top" id="zmr-fV-aIW"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="distanceLabel" destination="vsZ-Sh-NSc" id="jzR-az-pdU"/>
                         <outlet property="purposeOfTrip" destination="Gqf-cq-efr" id="Byb-A8-EXL"/>
-                        <outlet property="shareButton" destination="nhV-oj-e7L" id="i8n-dy-03s"/>
+                        <outlet property="shareButton" destination="wr0-2s-hOs" id="flO-DS-ANl"/>
                         <outlet property="stopStartTripButton" destination="YhS-z7-xIp" id="dGA-GR-Yf8"/>
-                        <outlet property="toolbar" destination="Thi-NS-AVW" id="NFa-3Q-Lqb"/>
+                        <outlet property="toolbar" destination="4JG-Dx-ef9" id="aNH-sZ-aFI"/>
                         <outlet property="unitOfMeasurementSwitch" destination="hFD-9f-nWm" id="lDi-zg-YHi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v7v-QB-6tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1133" y="530"/>
+            <point key="canvasLocation" x="1170" y="485"/>
         </scene>
         <!--New Trip-->
         <scene sceneID="IqX-uC-9vR">
@@ -927,7 +931,8 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="Re4-Zs-dRr">
+                            <barButtonItem image="191_+-2-(alt)" id="Re4-Zs-dRr">
+                                <color key="tintColor" red="0.76470588240000004" green="0.3921568627" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="addTripButtonPressed:" destination="cyD-x6-Czv" id="XvN-gf-Rc6"/>
                                     <segue destination="uf1-nj-uJC" kind="show" identifier="newTrip" id="5NP-g4-gcS"/>
@@ -1169,6 +1174,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="191_+-2-(alt)" width="22" height="22"/>
         <image name="316_Printer" width="25" height="25"/>
         <image name="67_Gears" width="22" height="22"/>
         <image name="Edit Property" width="22" height="22"/>
